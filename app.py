@@ -18,6 +18,6 @@ with tab2:
     st.header("A dog")
     st.image("https://static.streamlit.io/examples/dog.jpg")
 
-with tab2:
+with tab3:
     st.header("An owl")
     st.image("https://static.streamlit.io/examples/owl.jpg")
