@@ -21,12 +21,13 @@ st.write(
 Pratiquer le SQL"""
 )
 
-con = duckdb.connect(database="data/exercises_sql_tables_duckdb", read_only=False)
+#con = duckdb.connect(database="data/exercises_sql_tables_duckdb", read_only=False)
 
 with st.sidebar:
+    available_themes_df = con.execute("SELECT DISTINCT theme FROM memory_state").df()
     theme = st.selectbox(
         "Que voulez vous reviser",
-        ("cross_joins", "GroupBy", "windows_function"),
+        available_themes_df["theme"].unique(),
         index=None,
         placeholder="Selectionnez un thème",
     )
