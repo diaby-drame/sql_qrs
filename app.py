@@ -58,8 +58,13 @@ def check_users_solution(user_query: str, solution: pd.DataFrame):
     """
 
     # user response
-    result = con.execute(user_query).df()
-    st.table(result)
+    try:
+        result = con.execute(user_query).df()
+        st.table(result)
+    except Exception as e:
+        st.info("Erreur de syntaxe")
+        #st.error(f"Une erreur s'est produite : {str(e)}")
+        exit()
 
     try:
         # if the user response is correct
