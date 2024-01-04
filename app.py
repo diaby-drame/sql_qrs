@@ -116,18 +116,62 @@ with st.sidebar:
         st.write("Vous n'avez pas encore choisi un exercice")
         exit()
 
-    exercise_name = exercise.loc[0, "exercise_name"]
-    with open(f"answers/{exercise_name}.sql", "r") as f:
-        answer = f.read()
+    if theme_exercise:
+        exercise, _ = exercise_by_theme(theme, theme_exercise)
 
-    solution = con.execute(answer).df()
+        st.write(exercise)
+        tab2, tab3 = st.tabs(["Tables", "Solution"])
+        with tab2:
+            exercise_tables = exercise.loc[0, "tables"]
+            for table in exercise_tables:
+                st.write(f"table : {table}")
+                df_table = con.execute(f"SELECT * FROM {table}").df()
+                st.table(df_table)
+        with open(f"answers/{theme_exercise}.sql", "r") as f:
+            answer = f.read()
+        solution = con.execute(answer).df()
+        with tab3:
+            st.text(answer)
 
 
-st.header("entrez votre code:")
-query = st.text_area(label="votre code SQL ici", key="user_input")
-if query:
-    result = con.execute(query).df()
-    st.dataframe(result)
+if theme and theme_exercise:
+    clear.empty()
+    if st.checkbox("Consignes"):
+        if theme == "CROSS JOIN":
+            st.markdown(
+                """
+            Vous devez faire le produit cartésien des tables disponibles\n
+            **Note importante**: Pour une jointure, vous devez utiliser au minimum 2 tables"""
+            )
+
+        elif theme == "INNER JOIN":
+            st.markdown(
+                """
+            Vous devez faire une jointure interne pour rassembler les commandes avec les détails\n
+            **Note importante**: Pour une jointure, vous devez utiliser au minimum 2 tables"""
+            )
+
+        elif theme == "GROUP BY":
+            st.markdown(
+                """
+            Avec la table sales, vous devez calculer pour chaque client, la somme de ses dépenses 
+            """
+            )
+
+        elif theme == "GROUPING SETS":
+            st.markdown(
+                """
+            Avec la table population, vous devez grouper la poluation par:\n
+            année, région\n
+            année seulement"""
+            )
+
+        elif theme == "OVER":
+            st.markdown(
+                """
+            Avec la table furniture, vous devez créer une nouvelle colonne qui contiendra 
+            le poids total de tous les articles"""
+            )
 
     try:
         result = result[solution.columns]
