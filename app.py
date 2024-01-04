@@ -4,6 +4,7 @@ import os
 import duckdb
 import pandas as pd
 import streamlit as st
+from datetime import date, timedelta
 
 if "data" not in os.listdir():
     print("creating folder data")
@@ -173,31 +174,31 @@ if theme and theme_exercise:
             le poids total de tous les articles"""
             )
 
-    try:
-        result = result[solution.columns]
-        st.dataframe(result.compare(solution))
-    except KeyError as e:
-        st.write("Il manque des colonnes")
+        elif theme == "CASE WHEN":
+            st.markdown(
+                """
+            Avec la table wages, vous devez faire une augmentation aux employés de la manière suivante:\n
+            Les sales auront 10% d'augmentation, les RH 5%, les Tech (IT auront 3%)\n
+            Le CEO n'a pas d'augmentation"""
+            )
 
-    n_lines_difference = result.shape[0] - solution.shape[0]
-    if n_lines_difference != 0:
-        st.write(f"Il y a {n_lines_difference} lignes de différence avec la solution")
 
-tab2, tab3 = st.tabs(["Tables", "Solution"])
+st.markdown("### Entrez votre code:")
+with st.form(key="formulaire"):
+    query = st.text_input(label="Votre code SQL ici")
+    submit_button = st.form_submit_button(label="Envoyer")
+    if not query:
+        exit()
 
-with tab2:
-    exercise_tables = exercise.loc[0, "tables"]
-    for table in exercise_tables:
-        st.write(f"tables : {table}")
-        df_table = con.execute(f"SELECT * FROM {table}").df()
-        st.dataframe(df_table)
+if query and submit_button:
+    check_users_solution(query, solution)
 
-#     st.write("table: beverages")
-#     st.dataframe(beverages)
-#     st.write("table: food_items")
-#     st.dataframe(food_items)
-#     st.write("résultat attendu:")
-#     st.dataframe(solution)
-#
-with tab3:
-    st.text(answer)
+# review butoons
+cols = st.columns(3)
+for day, col in zip([2, 7, 21], cols):
+    if col.button(f"Revoir dans {day} jours"):
+        next_review = date.today() + timedelta(days=day)
+        con.execute(
+            f"UPDATE memory_state SET last_reviewed = '{next_review}' WHERE exercise_name = '{theme_exercise}'"
+        )
+        st.rerun()
