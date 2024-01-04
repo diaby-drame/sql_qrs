@@ -96,19 +96,25 @@ with st.sidebar:
         index=None,
         placeholder="Sélectionnez un thème",
     )
-    st.write("Vous avez choisi", theme)
+    st.write("Vous avez choisi :", theme)
+
+    if theme:
+        exercise, exercise_name = exercise_by_theme(theme)
+        theme_exercise = st.selectbox(
+            "",
+            exercise["exercise_name"].unique(),
+            index=None,
+            placeholder="Sélectionnez un exercice",
+        )
+        st.write("Vous avez choisi :", theme_exercise)
 
     if not theme:
         st.write("Vous n'avez pas encore choisi un thème")
         exit()
 
-    exercise = (
-        con.execute(f"SELECT * FROM memory_state WHERE theme = '{theme}'")
-        .df()
-        .sort_values("last_reviewed")
-        .reset_index()
-    )
-    st.write(exercise)
+    elif not theme_exercise:
+        st.write("Vous n'avez pas encore choisi un exercice")
+        exit()
 
     exercise_name = exercise.loc[0, "exercise_name"]
     with open(f"answers/{exercise_name}.sql", "r") as f:
