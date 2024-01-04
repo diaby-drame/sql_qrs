@@ -81,19 +81,20 @@ def check_users_solution(user_query: str, solution: pd.DataFrame):
 
 st.write(
     """
-# SQL SRS
-Pratiquer le SQL"""
+# Bienvenue dans mon application !"""
 )
-
-#con = duckdb.connect(database="data/exercises_sql_tables_duckdb", read_only=False)
+clear = st.empty()
+clear.write(
+    "Veuillez choisir un thème **SQL** et un exercice que vous voulez révisez dans la barre de gauche"
+)
 
 with st.sidebar:
     available_themes_df = con.execute("SELECT DISTINCT theme FROM memory_state").df()
     theme = st.selectbox(
-        "Que voulez vous reviser",
+        "Que voulez-vous réviser ?",
         available_themes_df["theme"].unique(),
         index=None,
-        placeholder="Selectionnez un thème",
+        placeholder="Sélectionnez un thème",
     )
     st.write("Vous avez choisi", theme)
 
