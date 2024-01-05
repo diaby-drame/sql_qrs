@@ -147,20 +147,25 @@ if theme and theme_exercise:
             st.markdown(
                 """
             Vous devez faire le produit cartésien des tables disponibles\n
-            **Note importante**: Pour une jointure, vous devez utiliser au minimum 2 tables"""
+            **Note importante**:\n
+            1) Pour une jointure, vous devez utiliser au minimum 2 tables\n
+            2) Vous devez avoir les mêmes noms de colonne que ceux du résultat attendu """
             )
 
         elif theme == "INNER JOIN":
             st.markdown(
                 """
             Vous devez faire une jointure interne pour rassembler les commandes avec les détails\n
-            **Note importante**: Pour une jointure, vous devez utiliser au minimum 2 tables"""
+            **Note importante**:\n
+            1) Pour une jointure, vous devez utiliser au minimum 2 tables\n
+            2) Vous devez avoir les mêmes noms de colonne que ceux du résultat attendu"""
             )
 
         elif theme == "GROUP BY":
             st.markdown(
                 """
-            Avec la table sales, vous devez calculer pour chaque client, la somme de ses dépenses 
+            Avec la table sales, vous devez calculer pour chaque client, la somme de ses dépenses\n
+            **Note importante**: Vous devez avoir les mêmes noms de colonne que ceux du résultat attendu
             """
             )
 
@@ -169,14 +174,16 @@ if theme and theme_exercise:
                 """
             Avec la table population, vous devez grouper la poluation par:\n
             année, région\n
-            année seulement"""
+            année seulement\n
+            **Note importante**: Vous devez avoir les mêmes noms de colonne que ceux du résultat attendu"""
             )
 
         elif theme == "OVER":
             st.markdown(
                 """
             Avec la table furniture, vous devez créer une nouvelle colonne qui contiendra 
-            le poids total de tous les articles"""
+            le poids total de tous les articles\n
+            **Note importante**: Vous devez avoir les mêmes noms de colonne que ceux du résultat attendu"""
             )
 
         elif theme == "CASE WHEN":
@@ -184,7 +191,8 @@ if theme and theme_exercise:
                 """
             Avec la table wages, vous devez faire une augmentation aux employés de la manière suivante:\n
             Les sales auront 10% d'augmentation, les RH 5%, les Tech (IT auront 3%)\n
-            Le CEO n'a pas d'augmentation"""
+            Le CEO n'a pas d'augmentation\n
+            **Note importante**: Vous devez avoir les mêmes noms de colonne que ceux du résultat attendu"""
             )
 
 
@@ -192,8 +200,7 @@ st.markdown("### Entrez votre code:")
 with st.form(key="formulaire"):
     query = st.text_input(label="Votre code SQL ici")
     submit_button = st.form_submit_button(label="Envoyer")
-    # if not query:
-    #     exit()
+
 clear2 = st.empty()
 if not query:
     with clear2.container():
