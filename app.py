@@ -192,10 +192,17 @@ st.markdown("### Entrez votre code:")
 with st.form(key="formulaire"):
     query = st.text_input(label="Votre code SQL ici")
     submit_button = st.form_submit_button(label="Envoyer")
-    if not query:
-        exit()
+    # if not query:
+    #     exit()
+clear2 = st.empty()
+if not query:
+    with clear2.container():
+        st.markdown(f"""Le résultat attendu :\n  """)
+        st.table(solution)
+    exit()
 
 if query and submit_button:
+    clear2.empty()
     check_users_solution(query, solution)
 
 # review butoons
